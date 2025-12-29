@@ -1,16 +1,35 @@
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
+    "layer": "top",
+    "position": "top",
     "height": 28,
 
-    // Choose the order of the modules
-    "modules-left": ["niri/workspaces", "wlr/taskbar", "custom/packages", "systemd-failed-units", "niri/window"], 
+    "modules-left": [
+        "niri/workspaces",
+        "wlr/taskbar",
+        "custom/packages",
+        "systemd-failed-units",
+        "niri/window"
+    ],
 
-    "modules-center": ["clock", "custom/notification", "idle_inhibitor"],
+    "modules-center": [
+        "clock",
+        "custom/notification",
+        "idle_inhibitor"
+    ],
 
-    "modules-right": ["mpris", "privacy", "group/audio", "cpu", "temperature", "memory", "tray", "custom/power"],
-
-    // "modules-right": ["privacy", "group/audio", "cpu", "temperature", "memory", "custom/netsymbol", "group/net", "group/disk", "custom/disksymbol", "tray", "custom/power"],
+    "modules-right": [
+        "privacy",
+        "group/audio",
+        "cpu",
+        "temperature",
+        "memory",
+        "network#wired",
+        "network#wifi",
+        "bluetooth",
+        "upower#bat0",
+        "group/sys",
+        "custom/power"
+    ],
 
     //***************************
     //*  Modules configuration  *
@@ -39,7 +58,7 @@
     "custom/packages": {
         "format": "{} ",
         "interval": 1200,
-        "exec": "dnf check-upgrade --refresh | wc -l",
+        "exec": "checkupdates | wc -l",
         "tooltip": false,
         "on-click": "~/scripts/tools/list-updates",
     },
@@ -61,7 +80,7 @@
     "clock": {
         "format": "{:L%a  %d. %B  %H:%M}",
         "locale":"de_DE.utf8",
-        "tooltip-format": "<span size='12pt'><tt><big>{calendar}</big></tt></span>",
+        "tooltip-format": "<span size='10pt'><tt><big>{calendar}</big></tt></span>",
         // "tooltip-format": "<tt><big>{calendar}</big></tt>",
         "calendar": {
                     "mode"          : "month",
@@ -78,6 +97,8 @@
                               }
                     },
         "actions":  {
+                    "on-click": "shift_down",
+                    "on-click-middle": "shift_up",
                     "on-click-right": "mode",
                     "on-scroll-down": "shift_up",
                     "on-scroll-up": "shift_down"
@@ -105,21 +126,6 @@
     "escape": true
     },
 
-    "mpris": {
-            "format": "{player} {player_icon} <i>{title}</i>",
-            "format-paused": "{player} {status_icon} <i>{title}</i>",
-            "title-len": 20,
-            "on-click-middle": "",
-            "on-click-right": "",
-            "player-icons": {
-                    "default": "▶",
-            },
-            "status-icons": {
-                    "paused": "⏸"
-            },
-            // "ignored-players": ["firefox"]
-    },
-
     "privacy": {
             "on-click": "swaync-client -t -sw",
             "icon-spacing": 4,
@@ -137,11 +143,6 @@
                             "tooltip-icon-size": 24
 
                     }
-                    // {
-                    //         "type": "audio-out",
-                    //         "tooltip": true,
-                    //         "tooltip-icon-size": 24
-                    // }
             ],
             "ignore-monitor": false,
     },
@@ -173,92 +174,45 @@
     },
 
     "pulseaudio": {
-        "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{icon}  {format_source}</span>",
-        "format-muted": "<span font=\"JetBrainsMono Nerd Font Medium\">  {format_source}</span>",
+        "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{icon} {format_source}</span>",
+        "format-muted": "<span font=\"JetBrainsMono Nerd Font Medium\" color='#797979'> {format_source}</span>",
         "format-source": "",
-        "format-source-muted": "",
+        "format-source-muted": "<span font=\"JetBrainsMono Nerd Font Medium\" color='#797979'></span>",
         "format-icons": {
             // "alsa_output.pci-0000_00_1f.3.analog-stereo": "󰋋",
             // "alsa_output.pci-0000_00_1f.3.analog-stereo-muted": "󰟎",
             "alsa_output.pci-0000_00_1f.3.stereo-fallback": "󰋋",
             "alsa_output.pci-0000_00_1f.3.stereo-fallback-muted": "󰟎",
-            "default": ["", "", "󰕾", ""]
+            "default": ["", "", ""]
         },
         "scroll-step": 1,
         "on-click": "flatpak run com.saivert.pwvucontrol",
+        // "on-click": "pavucontrol",
     },
 
-    "custom/netsymbol": {
-        "format":"<span font=\"JetBrainsMono Nerd Font Medium 14\">󰲝</span>",
-        "tooltip": false
-    },
+    // "custom/netsymbol": {
+    //     "format":"<span font=\"JetBrainsMono Nerd Font Medium 14\">󰲝</span>",
+    //     "tooltip": false
+    // },
+    //
+    // "group/net": {
+    //     "orientation": "vertical",
+    //     "modules": [
+    //         "network#netup",
+    //         "network#netdown"
+    //     ]
+    // },
 
-    "group/net": {
-        "orientation": "vertical",
-        "modules": [
-            "network#netup",
-            "network#netdown"
-        ]
-    },
-
-    "network#netup": {
-        "interval": 2,
-        "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{bandwidthUpBits} </span>",
-        "format-disconnected": "", 
-        "tooltip-format": "{ifname} via {gwaddr} 󰊗",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
-        "tooltip-format-ethernet": "{ifname}  ",
-        "tooltip-format-disconnected": "Disconnected",
-        "min-length": 11,
-        "align": 1,
-    },
-
-    "network#netdown": {
-        "interval": 2,
-        "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{bandwidthDownBits} </span>",
-        "format-disconnected": "", 
-        "tooltip-format": "{ifname} via {gwaddr} 󰊗",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
-        "tooltip-format-ethernet": "{ifname}  ",
-        "tooltip-format-disconnected": "Disconnected",
-        "min-length": 12,
-        "align": 1,
-    },
-
-    "custom/disksymbol": {
-        "format": "",
-        "tooltip": false
-    },
-
-    "group/disk": {
-        "orientation": "vertical",
-        "modules": [
-            "custom/diskread",
-            "custom/diskwrite",
-        ]
-    },
-
-    "custom/diskread": {
-        "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{}</span>",
-        "exec": "~/scripts/waybar-modules/disk_rate_read.sh",
-        "tooltip": false,
-    },
-
-    "custom/diskwrite": {
-        "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{}</span>",
-        "exec": "~/scripts/waybar-modules/disk_rate_write.sh",
-        "tooltip": false,
-    },
 
     "memory": {
         "format": "{used:3.2f} ",
-        "interval": 2,
+        "interval": 5,
     },
 
     "cpu": {
-        "max-length": 8,
-        "interval": 1,
-        "format": "<span font=\"JetBrainsMono Nerd Font Medium 14\"> {icon0}{icon2}{icon2}{icon3}</span>",
+        "max-length": 16,
+        "interval": 2,
+        "format": "<span font=\"JetBrainsMono Nerd Font Medium 14\"> {icon0}{icon2}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}</span>",
         "format-icons": [
               "<span color='#00E3DF'> </span>", 
               "<span color='#00E3DF'>⢀</span>", //  U+2880  8
@@ -282,12 +236,14 @@
     },
 
     "temperature": {
-        "interval": 2,
+        "interval": 3,
         "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
-        "critical-threshold": 80,
-        "format-critical": "{icon} {temperatureC}°C",
+        "critical-threshold": 90,
+        "format-critical": "<span color='red' font=\"JetBrainsMono Nerd Font Medium 16\">{icon}</span> {temperatureC}°C",
         "format": "<span font=\"JetBrainsMono Nerd Font Medium 16\">{icon}</span>",
         "format-icons": [
+            "", 
+            "", 
             "", 
             "", 
             "", 
@@ -295,6 +251,58 @@
             ""
         ],
         "tooltip": true,
+    },
+
+    "network#wifi": {
+        "interface": "wlp3s0",
+        "format": "<span font=\"JetBrainsMono Nerd Font Medium 16\">󱚾</span>",
+        "format-wifi": "<span font=\"JetBrainsMono Nerd Font Medium 16\">󱚽</span>",
+        "format-disconnected": "<span font=\"JetBrainsMono Nerd Font Medium 16\">󱛅</span>",
+        "format-disabled": "<span font=\"JetBrainsMono Nerd Font Medium 16\" color='#797979'>󰤮</span>",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) \n{ipaddr}\n{frequency} GHz",
+        "tooltip-format-disconnected": "Disconnected",
+        "tooltip-format-disabled": "Interface disabled",
+        "tooltip-format": "Configuring ...",
+    },
+
+    "network#wired": {
+        "interface": "enp0s31f6",
+        "format": "<span font=\"JetBrainsMono Nerd Font Medium 16\">󰱓</span>",
+        "format-disconnected": "<span font=\"JetBrainsMono Nerd Font Medium 16\" color='#797979'>󰅛</span>",
+        "format-disabled": "<span font=\"JetBrainsMono Nerd Font Medium 16\" color='#797979'>n</span>",
+        "tooltip-format-disconnected": "Disconnected",
+        "tooltip-format-disabled": "Interface disabled",
+        "tooltip-format": "Configuring ...",
+    },
+
+    "bluetooth": {
+            // "controller": "bt-controller",
+            "on-click": "rfkill toggle bluetooth",
+            "format": "<span font=\"JetBrainsMono Nerd Font Medium 16\"></span>",
+            "format-disabled": "<span font=\"JetBrainsMono Nerd Font Medium 16\" color='#797979'></span>",
+            "format-connected": "<span font=\"JetBrainsMono Nerd Font Medium 16\" color='#00E3DF'></span> {num_connections}",
+            "tooltip-format": "{controller_alias}\t{controller_address}",
+            "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+            "tooltip-format-disabled": "disabled",
+            "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+    },
+
+    "group/sys": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false,
+            "click-to-reveal": true,
+        },
+        "modules": [
+            "custom/tray-symbol", // First element is the "group leader" and won't ever be hidden
+            "tray",
+        ]
+    },
+
+    "custom/tray-symbol": {
+        "format": "",
+        "tooltip": false
     },
 
     "tray": {
@@ -310,6 +318,17 @@
         }
     },
 
+   "upower#bat0": {
+        "native-path": "BAT0",
+        "format": "",
+        // "format": " <sup>{percentage}</sup>",
+        "icon-size": 18,
+        "hide-if-empty": true,
+        "tooltip": true,
+        "tooltip-format": "{percentage}\n{time}",
+        "tooltip-spacing": 20
+   },
+
     "custom/power": {
         "format" : "<span font=\"JetBrainsMono Nerd Font Medium 16\"> </span>",
             "tooltip": false,
@@ -324,4 +343,52 @@
             },
     },
 
+    // "network#netup": {
+    //     "interval": 5,
+    //     "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{bandwidthUpBits} </span>",
+    //     "format-disconnected": "", 
+    //     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+    //     "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+    //     "tooltip-format-ethernet": "{ifname}  ",
+    //     "tooltip-format-disconnected": "Disconnected",
+    //     "min-length": 11,
+    //     "align": 1,
+    // },
+    //
+    // "network#netdown": {
+    //     "interval": 5,
+    //     "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{bandwidthDownBits} </span>",
+    //     "format-disconnected": "", 
+    //     "tooltip-format": "{ifname} via {gwaddr} 󰊗",
+    //     "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+    //     "tooltip-format-ethernet": "{ifname}  ",
+    //     "tooltip-format-disconnected": "Disconnected",
+    //     "min-length": 12,
+    //     "align": 1,
+    // },
+
+    // "custom/disksymbol": {
+    //     "format": "",
+    //     "tooltip": false
+    // },
+    //
+    // "group/disk": {
+    //     "orientation": "vertical",
+    //     "modules": [
+    //         "custom/diskread",
+    //         "custom/diskwrite",
+    //     ]
+    // },
+    //
+    // "custom/diskread": {
+    //     "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{}</span>",
+    //     "exec": "~/scripts/waybar-modules/disk_rate_read.sh",
+    //     "tooltip": false,
+    // },
+    //
+    // "custom/diskwrite": {
+    //     "format": "<span font=\"JetBrainsMono Nerd Font Medium\">{}</span>",
+    //     "exec": "~/scripts/waybar-modules/disk_rate_write.sh",
+    //     "tooltip": false,
+    // },
 }

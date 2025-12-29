@@ -13,10 +13,12 @@
 @define-color fg #A2A7B6;
     /* #3c3836 #383c4a #385c6a*/
 @define-color bg #383c4a;
+/* @define-color bg transparent; */
 
 window#waybar {
     background: transparent;
-    /* background: rgba(56, 60, 74, 0.4); */
+    /* background : linear-gradient(to right, #f32170, #ff6b08,#cf23cf, #eedd44); */
+    /* background: rgba(56, 60, 74, 0.8); */
     /* background: #111111; */
 }
 
@@ -27,7 +29,6 @@ window#waybar.hidden {
 tooltip {
     background: rgba(43, 48, 59, 1.0);
     border: 2px solid rgba(100, 114, 125, 0.5);
-    border-radius: 10px;
 }
 
 tooltip label {
@@ -113,7 +114,7 @@ tooltip label {
 
 #window {
     padding-left: 8px;
-    margin-left: 16px;
+    margin-left: 0px;
     font-size: 12px;
     color: @fg;
 }
@@ -124,6 +125,7 @@ tooltip label {
     border-radius: 0px 0px 0px 10px;
     transition: none;
     color: @fg;
+    /* background : linear-gradient(to right, #f32170, #ff6b08,#cf23cf, #eedd44); */
     background: @bg;
     font-weight: bold;
 }
@@ -161,8 +163,8 @@ tooltip label {
 
 #privacy {
     margin-right: 8px;
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: 4px;
+    padding-left: 8px;
     border-radius: 0px 0px 10px 10px;
     transition: none;
     color: #A94949;
@@ -204,7 +206,7 @@ tooltip label {
 
 #pulseaudio {
     margin-right: 8px;
-    padding-left: 16px;
+    padding-left: 8px;
     padding-right: 14px;
     border-radius: 0px 0px 10px 10px;
     transition: none;
@@ -212,10 +214,10 @@ tooltip label {
     background: @bg;
 }
 
-#pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
-}
+/* #pulseaudio.muted { */
+/*     background-color: #90b1b1; */
+/*     color: #2a5c45; */
+/* } */
 
 #cpu {
     padding-left: 12px;
@@ -300,18 +302,84 @@ tooltip label {
     background: @bg;
 }
 
-#tray {
-    margin-right: 8px;
+
+#network {
+    color: @fg;
+    background: @bg;
+    margin-right: 0px;
     padding-left: 8px;
     padding-right: 8px;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 0px 0px;
     transition: none;
+}
+
+#network.wired {
+    color: @fg;
+    background: @bg;
+    margin-right: 0px;
+    padding-left: 12px;
+    padding-right: 6px;
+    border-radius: 0px 0px 0px 10px;
+    transition: none;
+}
+
+#network.wifi {
+    color: @fg;
+    background: @bg;
+    margin-right: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 0px 0px 0px 0px;
+    transition: none;
+}
+
+#bluetooth {
+    color: @fg;
+    background: @bg;
+    margin-right: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 0px 0px 0px 0px;
+    transition: none;
+}
+
+#upower {
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 4px;
+    border-radius: 0px 0px 0px 0px;
+    /* transition: none; */
+    color: @fg;
+    /* color: @fg; */
+    background: @bg;
+}
+
+#tray {
+    margin-right: 0px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 0px 0px 0px 0px;
+    /* transition: none; */
     color: @fg;
     background: @bg;
 }
 
-#custom-power {
+#custom-tray-symbol {
     margin-right: 0px;
+    padding-left: 4px;
+    padding-right: 8px;
+    border-radius: 0px 0px 10px 0px;
+    transition: none;
+    color: #797979;
+    background: @bg;
+}
+
+#custom-tray-symbol:hover {
+    color: @fg;
+}
+
+#custom-power {
+    margin-left: 8px;
     padding-left: 16px;
     padding-right: 8px;
     border-radius: 0px 0px 0px 10px;

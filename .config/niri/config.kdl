@@ -1,10 +1,9 @@
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
-// https://yalter.github.io/niri/Configuration:-Introduction
+// http<Cmd>lua require"cmp.utils.feedkeys".run(2)
+//yalter.github.io/niri/Configuration:-Introduction
 
-// Input device configuration.
-// Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 input {
     keyboard {
@@ -13,9 +12,9 @@ input {
             // For more information, see xkeyboard-config(7).
 
             // For example:
-            // layout "de"
-            // variant "latin1-nodeadkeys"
-
+            layout "de"
+            variant "nodeadkeys"
+            file "~/.xkb/symbols/pc"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
 
             // If this section is empty, niri will fetch xkb settings
@@ -24,7 +23,7 @@ input {
         }
 
         // Enable numlock on startup, omitting this setting disables it.
-        numlock
+        // numlock
     }
 
     // Next sections include libinput settings.
@@ -33,21 +32,23 @@ input {
     touchpad {
         // off
         tap
-        // dwt
+        dwt
         // dwtp
-        // drag false
+        drag true
         // drag-lock
         natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "two-finger"
+        accel-speed 0.4
+        accel-profile "flat"
+        scroll-method "two-finger"
         // disabled-on-external-mouse
     }
 
     mouse {
         // off
+        // drag-lock
         // natural-scroll
-         accel-speed 0.0
+        // drag-lock
+        accel-speed 0.0
         // accel-profile "flat"
         // scroll-method "two-finger"
     }
@@ -55,14 +56,21 @@ input {
     trackpoint {
         // off
         // natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "on-button-down"
-        // scroll-button 273
+        accel-speed 0.0
+        accel-profile "flat"
+        scroll-method "on-button-down"
+        scroll-button 273
         // scroll-button-lock
         // middle-emulation
     }
 
+        tablet {
+        off
+    }
+
+    touch {
+        // off
+    }
     // Uncomment this to make the mouse warp to the center of newly focused windows.
     // warp-mouse-to-focus
 
@@ -132,6 +140,7 @@ layout {
         proportion 0.33333
         proportion 0.5
         proportion 0.66667
+        proportion 0.8
 
         // Fixed sets the width in logical pixels exactly.
         // fixed 1920
@@ -277,16 +286,19 @@ layout {
 // See the binds section below for more spawn examples.
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
-// spawn-sh-at-startup "waybar -c /home/wasted/.config/waybar/niri_config.jsonc -s /home/wasted/.config/waybar/niri_style.css"
+// spawn-sh-at-startup "rfkill unblock bluetooth && sleep 2 && rfkill block bluetooth"
 spawn-at-startup "swaync"
-spawn-at-startup "/usr/libexec/polkit-mate-authentication-agent-1"
+// spawn-at-startup "blueman-applet"
+// spawn-sh-at-startup "sleep 4 && rfkill block bluetooth"
+spawn-sh-at-startup "sleep 1 && niri msg keyboard-layouts"
+spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
 spawn-sh-at-startup "swaybg --image ~/.config/wallpaper/wp_blur.jpg"
-spawn-sh-at-startup "/home/wasted/.local/bin/swww-daemon -n lolpaper" 
-spawn-sh-at-startup "sleep 1 && /home/wasted/.local/bin/swww img ~/.config/wallpaper/wp.jpg -n lolpaper" 
-spawn-sh-at-startup "gammastep-indicator -c /home/wasted/.config/gammastep/gammastep.conf"
-// spawn-sh-at-startup "~/.config/niri/idle.sh"
-// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
-// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+spawn-sh-at-startup "swww-daemon -n lolpaper" 
+spawn-sh-at-startup "sleep 1 && swww img ~/.config/wallpaper/wp.jpg -n lolpaper" 
+spawn-sh-at-startup "gammastep-indicator -c ~/.config/gammastep/gammastep.conf"
+// spawn-sh-at-startup "sleep 1 && foot -e dbus-monitor --system > dbus-log"
+// spawn-sh-at-startup "sleep 1 && foot -e journalctl -kf"
+// spawn-sh-at-startup "sleep 1 && foot -e watch -n1 rfkill list"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
@@ -331,6 +343,12 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"foot$"#
+    default-column-width { proportion 0.8; }
+}
+
+
+window-rule {
     match app-id=r#"steam$"# title="^Freundesliste$"
     default-column-width { proportion 0.2; }
     default-window-height { proportion 0.7; }
@@ -351,7 +369,6 @@ window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     match app-id=r#"firefox$"# title="^Bild-im-Bild$"
     match app-id=r#"pwvucontrol$"# 
-    match app-id=r#"Calculator$"# 
     match app-id=r#"eyedropper$"# 
     open-floating true
 }
@@ -417,6 +434,7 @@ binds {
     Super+R hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
+
     XF86Calculator hotkey-overlay-title="Calculator" { spawn "gnome-calculator"; }
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -428,14 +446,14 @@ binds {
     // Using spawn-sh allows to pass multiple arguments together with the command.
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
 
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+5%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "5%-"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -640,9 +658,9 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    XF86SelectiveScreenshot { screenshot; }
+    Ctrl+XF86SelectiveScreenshot { screenshot-screen; }
+    Alt+XF86SelectiveScreenshot { screenshot-window; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here

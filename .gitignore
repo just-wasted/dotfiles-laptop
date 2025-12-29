@@ -12,7 +12,6 @@
 !.config/gtk-4.0/
 !.config/helix/
 !.config/niri/
-!.config/nvim/
 !.config/river/
 !.config/swayidle/
 !.config/swaylock/

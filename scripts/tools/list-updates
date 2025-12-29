@@ -1,4 +1,5 @@
 #!/bin/bash
 
 #(checkupdates;pacman -Qm | aur vercmp) | wofi --dmenu 
-dnf check-upgrade | fuzzel --dmenu --hide-prompt
+# dnf check-upgrade | fuzzel --dmenu --hide-prompt
+(checkupdates;pacman -Qm | aur vercmp) | fuzzel --dmenu --hide-prompt

@@ -21,6 +21,11 @@ riverctl default-layout rivertile
 
 riverctl spawn /home/wasted/.config/river/idle.sh
 
+riverctl spawn 'sleep 1 && foot -e journalctl -kf'
+riverctl spawn 'sleep 2 && rfkill unblock bluetooth && sleep 5 && rfkill block bluetooth'
+riverctl spawn waybar
+# riverctl spawn blueman-applet
+
 riverctl send-layout-cmd rivertile "main-location left"
 
 rivertile -view-padding 2 -outer-padding 4 &
@@ -55,7 +60,8 @@ riverctl map normal Super N spawn 'foot -e nvim'
 
 riverctl map normal Super Q spawn 'foot'
 
-riverctl map normal Super R spawn 'wofi --show drun --width=15% --height=200'
+# riverctl map normal Super R spawn 'wofi --show drun --width=15% --height=200'
+riverctl map normal Super R spawn 'fuzzel --show drun --width=15% --height=200'
 
 riverctl map normal Super P spawn 'cliphist list | wofi --dmenu | cliphist decode | wl-copy'
 
