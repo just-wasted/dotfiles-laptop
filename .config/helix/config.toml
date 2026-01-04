@@ -1,8 +1,59 @@
-theme = "tokynight_moontokynight_moon"
+theme = "tokyonight_moon"
+
 [editor]
 cursorline = true
 true-color = true
 color-modes = true
+line-number = "relative"
+popup-border = "all"
+completion-timeout = 5
+
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
+[editor.statusline]
+left = ["mode", "spacer", "version-control", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]
+center = []
+right = ["diagnostics", "selections", "register", "position", "total-line-numbers", "file-encoding"]
+separator = "│"
+mode.normal = "NOR"
+mode.insert = "INS"
+mode.select = "SEL"
+diagnostics = ["warning", "error"]
+workspace-diagnostics = ["warning", "error"]
+
+
+[editor.indent-guides]
+render = true
+skip-levels = 1
+
+[editor.soft-wrap]
+enable = true
 
 [editor.lsp]
-display-inlay-hints = true
+display-inlay-hints = false
+display-messages = true
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+nbsp = "none"
+nnbsp = "none"
+newline = "none"
+
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+[keys.insert.j]
+k = "normal_mode"
+
+[keys.normal]
+G = "goto_file_end"
