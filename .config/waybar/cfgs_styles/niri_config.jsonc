@@ -210,11 +210,12 @@
     },
 
     "cpu": {
-        "max-length": 16,
+        // "max-length": 16,
         "interval": 2,
         "format": "<span font=\"JetBrainsMono Nerd Font Medium 14\"> {icon0}{icon2}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}</span>",
         "format-icons": [
-              "<span color='#00E3DF'> </span>", 
+              // "<span color='#00E3DF'> </span>", 
+              "<span color='#383C4A'>⢀</span>", //  U+2880  8
               "<span color='#00E3DF'>⢀</span>", //  U+2880  8
               "<span color='#00E3DF'>⣀</span>", //  U+28C0  7,8
               "<span color='#00E3DF'>⣠</span>", //  U+28E0  6,7,8
