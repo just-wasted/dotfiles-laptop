@@ -1,0 +1,132 @@
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+let mapleader = " "
+set clipboard+=unnamed
+set clipboard+=unnamedplus
+
+
+map <leader>9 :source ~/.ideavimrc<cr>
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+
+" Do incremental searching.
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+
+Plug 'vim-scripts/argtextobj.vim'
+let g:argtextobj_pairs="(:),{:},<:>"
+
+set functiontextobj
+set mini-ai
+set peekaboo
+set which-key
+set notimeout
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+map <leader>F <Action>(ReformatCode)
+map <Esc> :nohlsearch<CR>
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+"" Choosing handlers in conflicting IDE/IdeaVim keymaps =======
+sethandler <c-i> n-v-i:vim
+sethandler <c-o> n-v-i:vim
+sethandler <c-d> n-v-i:vim
+sethandler <c-u> n-v-i:vim
+sethandler <c-h> n-v-i:vim
+sethandler <c-j> n-v-i:vim
+sethandler <c-k> n-v-i:vim
+sethandler <c-l> n-v-i:vim
+sethandler <c-a-d> n-v-i:vim
+sethandler <c-r> n-v-i:vim
+
+nnoremap <leader>o o<Esc>
+nnoremap <leader>O O<Esc>
+
+map <leader>fe :action GotoClass<cr>
+map <leader>fn :action GotoFile<cr>
+map <leader>fp :action ManageRecentProjects<cr>
+map <leader>fa :action GotoAction<cr>
+map <leader>fg :action FindInPath<cr>
+map <leader>fh :action RecentFiles<cr>
+map <leader>fl :action RecentLocations<cr>
+map <leader>fm :action ShowBookmarks<cr>
+map <leader>fs :action GotoSymbol<cr>
+map <leader>fd :action Find<cr>
+map <leader>fr :action Replace<cr>
+map <leader>fR :action ReplaceInPath<cr>
+map <leader>fx :action PasteMultiple<cr>
+map <leader>fk :action ViewBreakpoints<cr>
+
+" Views (leader v)
+map <leader>vf :action ActivateProjectToolWindow<cr>
+map <leader>vp :action ActivateProblemsViewToolWindow<cr>
+map <leader>vs :action ActivateStructureToolWindow<cr>
+map <leader>vt :action ActivateTerminalToolWindow<cr>
+map <leader>vv :action ActivateServicesToolWindow<cr>
+map <leader>vd :action ActivateDebugToolWindow<cr>
+map <leader>vg :action ActivateVersionControlToolWindow<cr>
+map <leader>vo :action ActivateTODOToolWindow<cr>
+map <leader>vc :action ActivateGitHubCopilotChatToolWindow<cr>
+map <leader>vb :action ActivateBookmarksToolWindow<cr>
+map <leader>vq :action CloseActiveTab<cr>
+
+" Folds
+nnoremap - :action ExpandAllRegions<cr>
+nnoremap za :action ExpandCollapseToggleAction<cr>
+
+" Code navigation
+nnoremap gd :action GotoDeclaration<cr>
+nnoremap gtd :action GotoTypeDeclaration<cr>
+nnoremap gI :action GotoImplementation<cr>
+nnoremap <leader>cs :action GotoSuperMethod<cr>
+nnoremap gr :action ShowUsages<cr>
+nnoremap <leader>cu :action HighlightUsagesInFile<cr>
+nnoremap K :action ShowHoverInfo<cr>
+nnoremap <leader>cc :action CallHierarchy<CR>  
+nnoremap <leader>cn :action ShowNavBar<CR>
+nnoremap <leader>cx :action FileStructurePopup<CR> 
+nnoremap <leader>cb :action CompileDirty<CR> 
+nnoremap <leader>cp :action ParameterInfo<CR> 
+nnoremap <leader>cq :action QuickImplementations<cr>
+
+nnoremap gn :action RenameElement<CR>
+nnoremap <leader>th :action ToggleInlayHintsGlobally<CR>
+
+nnoremap <c-+> :action 
+
+" Window navigation
+nnoremap <c-h> <c-w>h  
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k  
+nnoremap <c-l> <c-w>l  
+nnoremap <a-w> :action CloseAllEditorsButActive<cr>
+nnoremap <a-q> :action CloseContent<cr>
+nnoremap <leader>wv :action SplitVertically<cr>
+nnoremap <leader>ws :action SplitHorizontally<cr>
+nnoremap <leader>wc :action Unsplit<cr>
+nnoremap <leader>wp :action MoveEditorToOppositeTabGroup<cr>
+nnoremap <Leader>ww :action EditSourceInNewWindow<cr> 
